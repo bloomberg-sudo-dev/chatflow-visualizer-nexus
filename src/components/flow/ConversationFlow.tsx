@@ -5,13 +5,14 @@ import {
   Background,
   Controls,
   MiniMap,
-  Node as FlowNode,
+  Node,
   Edge,
   NodeTypes,
   useReactFlow,
 } from "@xyflow/react";
 import { MessageNode, MessageNodeData } from "./CustomNodes";
 import { NodeTooltip } from "./NodeTooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import "@xyflow/react/dist/style.css";
 
 interface ConversationFlowProps {
@@ -24,15 +25,15 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
   
   // Define the node types
   const nodeTypes = useMemo<NodeTypes>(() => ({
-    message: MessageNode as any,
+    message: MessageNode,
   }), []);
   
   // Create nodes from messages
-  const nodes: FlowNode[] = useMemo(() => {
+  const nodes: Node[] = useMemo(() => {
     return messages.map((message, index) => ({
       id: message.id,
       type: "message",
-      data: { ...message },
+      data: message,
       position: { x: 0, y: index * 150 },
     }));
   }, [messages]);
@@ -49,9 +50,8 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
   }, [messages]);
   
   // Handle node hover
-  const onNodeMouseEnter = useCallback((_, node: FlowNode) => {
-    const nodeData = node.data as MessageNodeData;
-    setHoveredNode(nodeData);
+  const onNodeMouseEnter = useCallback((_, node) => {
+    setHoveredNode(node.data);
   }, []);
   
   const onNodeMouseLeave = useCallback(() => {
@@ -83,7 +83,7 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
         <Controls className="m-2" />
         <MiniMap
           nodeColor={(node) => {
-            return (node.data as MessageNodeData).role === "user" ? "#8B5CF6" : "#3B82F6";
+            return node.data.role === "user" ? "#8B5CF6" : "#3B82F6";
           }}
         />
         

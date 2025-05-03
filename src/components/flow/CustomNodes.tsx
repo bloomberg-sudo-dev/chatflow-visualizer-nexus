@@ -1,6 +1,6 @@
 
 import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
+import { Handle, Position, NodeProps } from "@xyflow/react";
 
 export interface MessageNodeData {
   id: string;
@@ -9,7 +9,7 @@ export interface MessageNodeData {
   timestamp?: string;
 }
 
-export const MessageNode = memo(({ data }: { data: MessageNodeData }) => {
+export const MessageNode = memo(({ data }: NodeProps<MessageNodeData>) => {
   const isUser = data.role === "user";
   const nodeClass = isUser ? "user-node" : "assistant-node";
   
