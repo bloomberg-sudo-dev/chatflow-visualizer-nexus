@@ -34,7 +34,7 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
       type: "message",
       data: message,
       position: { x: 0, y: index * 150 },
-    }));
+    } as Node));
   }, [messages]);
   
   // Create edges between nodes
@@ -50,7 +50,6 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
   
   // Handle node hover
   const onNodeMouseEnter = useCallback((_, node) => {
-    // Ensure the node data matches our expected MessageNodeData type
     if (
       node.data && 
       typeof node.data === 'object' && 

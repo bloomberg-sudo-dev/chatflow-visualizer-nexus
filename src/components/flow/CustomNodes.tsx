@@ -2,6 +2,7 @@
 import { memo } from "react";
 import { Handle, Position, NodeProps } from "@xyflow/react";
 
+// This interface represents just the data portion of a node
 export interface MessageNodeData {
   id: string;
   role: "user" | "assistant";
