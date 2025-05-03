@@ -13,8 +13,17 @@ const parseConversation = (url: string): Promise<MessageNodeData[]> => {
   return new Promise((resolve) => {
     // Simulate API call
     setTimeout(() => {
-      // For demo, we'll generate a mock conversation based on the URL hash
-      const hash = url.split("/").pop() || "";
+      // Extract conversation ID from the URL
+      let conversationId;
+      if (url.includes("chat.openai.com/share/")) {
+        conversationId = url.split("chat.openai.com/share/")[1];
+      } else if (url.includes("chatgpt.com/share/")) {
+        conversationId = url.split("chatgpt.com/share/")[1];
+      } else {
+        conversationId = "";
+      }
+
+      const hash = conversationId || "";
       const messageCount = (hash.length % 5) + 5; // 5-9 messages
       
       const messages: MessageNodeData[] = [];
@@ -88,7 +97,7 @@ export function ConversationVisualizer() {
           <div className="text-center max-w-md">
             <h3 className="text-xl font-bold mb-2">Paste a ChatGPT share link to begin</h3>
             <p className="text-muted-foreground">
-              Enter a link to a shared conversation from chat.openai.com to visualize it as an interactive node graph.
+              Enter a link to a shared conversation from chat.openai.com or chatgpt.com to visualize it as an interactive node graph.
             </p>
           </div>
         </div>
