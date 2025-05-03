@@ -12,7 +12,6 @@ import {
 } from "@xyflow/react";
 import { MessageNode, MessageNodeData } from "./CustomNodes";
 import { NodeTooltip } from "./NodeTooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import "@xyflow/react/dist/style.css";
 
 interface ConversationFlowProps {
@@ -51,7 +50,16 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
   
   // Handle node hover
   const onNodeMouseEnter = useCallback((_, node) => {
-    setHoveredNode(node.data);
+    // Ensure the node data matches our expected MessageNodeData type
+    if (
+      node.data && 
+      typeof node.data === 'object' && 
+      'id' in node.data && 
+      'role' in node.data && 
+      'content' in node.data
+    ) {
+      setHoveredNode(node.data as MessageNodeData);
+    }
   }, []);
   
   const onNodeMouseLeave = useCallback(() => {
@@ -83,7 +91,14 @@ export function ConversationFlow({ messages }: ConversationFlowProps) {
         <Controls className="m-2" />
         <MiniMap
           nodeColor={(node) => {
-            return node.data.role === "user" ? "#8B5CF6" : "#3B82F6";
+            if (
+              node.data && 
+              typeof node.data === 'object' && 
+              'role' in node.data
+            ) {
+              return (node.data as MessageNodeData).role === "user" ? "#8B5CF6" : "#3B82F6";
+            }
+            return "#cccccc"; // Default color if data is invalid
           }}
         />
         

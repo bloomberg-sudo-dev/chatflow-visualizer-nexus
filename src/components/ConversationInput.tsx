@@ -26,10 +26,10 @@ export function ConversationInput({ onSubmit, isLoading }: ConversationInputProp
       return;
     }
 
-    if (!url.includes("chat.openai.com/share/")) {
+    if (!url.includes("chat.openai.com/share/") && !url.includes("chatgpt.com/share/")) {
       toast({
         title: "Invalid Link",
-        description: "Please enter a valid ChatGPT share link (https://chat.openai.com/share/...).",
+        description: "Please enter a valid ChatGPT share link (https://chat.openai.com/share/... or https://chatgpt.com/share/...).",
         variant: "destructive",
       });
       return;
@@ -45,7 +45,7 @@ export function ConversationInput({ onSubmit, isLoading }: ConversationInputProp
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="Paste your ChatGPT share link (https://chat.openai.com/share/...)"
+          placeholder="Paste your ChatGPT share link (https://chat.openai.com/share/... or https://chatgpt.com/share/...)"
           className="pr-12"
           disabled={isLoading}
         />
